@@ -7,7 +7,7 @@ phases:
       - sh gradlew clean assemble
 artifacts:
   files:
-    - build/libs/*.jar
+    - build/libs/cloud-computing-aws-*.jar
     - appspec.yml
     - start_application.sh
   discard-paths: yes
