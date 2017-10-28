@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: src-1.0-SNAPSHOT.jar
+  - source: cloud-reverser-1.0-SNAPSHOT.jar
     destination: /tmp
 hooks:
   ApplicationStart:
