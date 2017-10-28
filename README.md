@@ -115,7 +115,6 @@ dependencies {
 
 ### Cloud DB
 
-#### Create a new RDS instance
 [Login to AWS](https://sts.omegapoint.se/adfs/ls/IdpInitiatedSignOn.aspx). Go to **RDS** under _"Database"_. Click on the orange button _"Launch a DB Instance"_ and choose _PostgreSQL_. 
 
 
