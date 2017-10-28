@@ -8,6 +8,6 @@ phases:
 artifacts:
   files:
     - appspec.yml
-    - 'build/libs/cloud-computing-aws-1.0-SNAPSHOT.jar'
+    - 'build/libs/*.jar'
     - start_application.sh
   discard-paths: yes
