@@ -116,9 +116,40 @@ dependencies {
 ### Cloud DB
 
 #### Create a new RDS instance
-Log in to AWS and create a new RDS instance called `<application-name>-db`. Modify your profile configuaration file `application-production.properties` so that the application can connect to the new RDS instance. 
+[Login to AWS](https://sts.omegapoint.se/adfs/ls/IdpInitiatedSignOn.aspx). Go to **RDS** under _"Database"_. Click on the orange button _"Launch a DB Instance"_ and choose _PostgreSQL_. 
 
-At the very top of the configuration file, put `spring.profiles.active=production`.
+
+Make the following choices:
+
+ 1. **Choose use case**
+  - Dev/Test
+ 
+ 2. **Specify DB details** 
+  - DB engine version: _PostgreSQL 9.6.2-R1_
+  - DB instance class: _db.t2.micro_
+  - Allocated storage: `20 GB`
+  - DB instance identifier: `<application-name>-instance`
+  - Master username: `<username>`
+  - Master password: `<password>`
+ 3. **Configure advanced settings**
+  - Virtual Private Cloud (VPC): _Default VPC_
+  - Public accessibility: _Yes_
+  - Databasename: `<application-name>-db`
+  - Databaseport: `5432`
+  - Backup: _No preference_
+  - Monitoring: _Disable_
+  - Maintenance: _Disable_
+  - Maintenance window: _No preference_
+ 
+ On your RDS overview, choose _"Instances"_ and collect the following info:
+ 
+  * Endpoint
+  * DB Name
+  * Username
+
+Insert the information into `application-production.properties` in your project. At the very top of the configuration file, put `spring.profiles.active=production`.
+
+You should now be able to run `./gradlew bootRun -Dspring.profiles.active=production` and connect your application to the RDS instance.  
 
 ## 4. Manual deploy on EC2
 
