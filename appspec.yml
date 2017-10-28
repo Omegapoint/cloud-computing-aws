@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: *.jar
+    destination: /tmp
+hooks:
+  ApplicationStart:
+    - location: start_application.sh
+      timeout: 500
+      runas: root
