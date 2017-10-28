@@ -1,14 +1,14 @@
 # Cloud Computing w/ AWS
 
 1. [Setup project](#setup)
-2. [Kafka Installation Instructions for Ubuntu 16.04 LTS](#install)
-3. [Command line Exercises](#CommandExercises)
-4. [Java Exercises](#JavaExercises)
+2. [Application profiles](#application_profiles)
+3. [Connecting your application to a PostgreSQL database](#database)
+4. [Manual deploy on EC2](#manualdeploy)
 
 
 <a name="setup"></a>
 ## 1. Setup project
- 1. Download [Spring Boot 1.5.8](http://start.spring.io/) with gradle. Pick the _web_ and _postgreSQL_ dependencies. Use `group ID = se.omegapoint` and `artifact ID = <application-name>`.
+ 1. Download [Spring Boot 1.5.8](http://start.spring.io/) with gradle. Pick the _web_, _JPA_ and _postgreSQL_ dependencies. Use `group ID = se.omegapoint` and `artifact ID = <application-name>`.
  2. Install [PostgreSQL](https://www.postgresql.org/download/) on your local machine.
  3. Install [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your local machine.
  4. Create a [Github](https://github.com/Omegapoint) repository at `https://github.com/Omegapoint/<application-name>`
@@ -54,7 +54,7 @@ For example, if `<data> = "omegapoint"` the application should return:
 }
 ```
 
-
+<a name="application_profiles"></a>
 ## 2. Application profiles
 In order to be able to have different configurations for different environments, you need to create profile Add two properties files to the project: `application-production.properties` and `applications-local.properties`. Add `spring.profiles.active=local` at the very top of the file `applications-local.properties`. You also need to add the following code to `build.gradle`:
 
@@ -69,7 +69,7 @@ bootRun {
 
 You can now run your application with `./gradlew bootRun -Dspring.profiles.active=local` and vice versa.
 
-
+<a name="database"></a>
 ## 3. Connecting your application to a PostgreSQL database
 
 ### Local DB
@@ -128,7 +128,7 @@ Make the following choices:
   - DB engine version: _PostgreSQL 9.6.2-R1_
   - DB instance class: _db.t2.micro_
   - Allocated storage: `20 GB`
-  - DB instance identifier: `<application-name>-instance`
+  - DB instance identifier: `<application-name>-db-instance`
   - Master username: `<username>`
   - Master password: `<password>`
  3. **Configure advanced settings**
@@ -149,8 +149,8 @@ Make the following choices:
 
 Insert the information into `application-production.properties` in your project. At the very top of the configuration file, put `spring.profiles.active=production`.
 
-You should now be able to run `./gradlew bootRun -Dspring.profiles.active=production` and connect your application to the RDS instance.  
-
+You should now be able to run `./gradlew bootRun -Dspring.profiles.active=production` **on your local machine** and connect your application to the RDS instance.  
+<a name="manualdeploy"></a>
 ## 4. Manual deploy on EC2
 
 
