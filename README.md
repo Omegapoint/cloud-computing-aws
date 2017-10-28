@@ -59,6 +59,8 @@ For example, if `<data> = "omegapoint"` the application should return:
 In order to be able to have different configurations for different environments, you need to create profile Add two properties files to the project: `application-production.properties` and `applications-local.properties`. Add `spring.profiles.active=local` at the very top of the file `applications-local.properties`. You also need to add the following code to `build.gradle`:
 
 ```javascript
+archivesBaseName = '<application-name>'
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -151,6 +153,49 @@ Insert the information into `application-production.properties` in your project.
 You should now be able to run `./gradlew bootRun -Dspring.profiles.active=production` **on your local machine** and connect your application to the RDS instance.  
 <a name="manualdeploy"></a>
 ## 4. Manual deploy on EC2
+
+### Setup instance
+[Login to AWS](https://sts.omegapoint.se/adfs/ls/IdpInitiatedSignOn.aspx). 
+
+ 1. **Go to the Service -> EC2 -> Key pairs.** 
+ 2. **Create a new key** and download an ssh key. You will use this to connect to instances that you provision during this lab. The key should be called `<application-name>-key` 
+ 3. **Choose an Instance Type**
+  - Go to the Service -> EC2 -> Instances. 
+  - Launch an EC2-instance using Amazon Linux on a *t2.micro* instance. Click _Next: Configure Instance Details_
+ 5. **Configure Instance Details** - Leave all fields as default
+ 6. **Add Storage** - Leave all fields as default 
+ 7. **Add Tags** 
+  - Key: `Name`
+  - Value `<application-name>`
+ 8. **Configure Security Group 1**
+  - Security group name: `<application-name>-security-group`
+  - Type: _SSH_
+  - Protocol: _TCP_
+  - Port Range: `22`
+  - Source: `My IP`
+  - Description: `SSH for admin`
+ 9. **Configure Security Group 2**
+  - Type: _Custom TCP_
+  - Protocol: _TCP_
+  - Port Range: `8080` (or whichever port your application is running)
+  - Source: `My IP`
+  - Description `<insert-something-smart>`
+ 10. **Review Instance Launch** - Leave all fields as default
+ 11. **Select an existing key pair or create a new key pair**
+  - _Choose an existing key pair_
+  - `<application-name>-key`
+ 12. Verify that your EC2 is working by SSH to your EC2 instance. The username is **ec2-user**.
+
+You have now created a new EC2 instance in the cloud, yay!
+
+### Manual deploy
+
+ 1. Upload your jar to to the instance with scp.
+ 2. Install java with `yes | sudo yum install java-1.8.0` and remove Java 1.7 with `yes | sudo yum remove java-1.7.0`
+ 3. Start the application by using the command `java -jar <app-name> -Dspring.profiles.active=production`.
+ 4. Verify that your app is accessible from the internet by browsing the public IP address of the instance.
+ 
+
 
 
 
