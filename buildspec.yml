@@ -7,7 +7,7 @@ phases:
       - sh gradlew clean assemble
 artifacts:
   files:
-    - build/libs/*.jar
     - appspec.yml
+    - 'build/libs/*.jar'
     - start_application.sh
   discard-paths: yes
