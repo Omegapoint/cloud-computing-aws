@@ -197,6 +197,131 @@ You have now created a new EC2 instance in the cloud, yay!
  
 
 
+## 5. Deployment with CodePipeline
+CodePipeline is a managed service that connects together several other managed services. We will be using CodeBuild and CodeDeploy.
+In this lab CodeBuild will be configured to test and build our application. CodeDeploy will then copy the built artifact to an EC2 instance and start it.
 
+### Setup a new EC2 instance
+CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
+
+ 1. Terminate the EC2 instance you provisioned in the previous lab
+ 2. Download this CloudFormation template: http://s3-eu-west-1.amazonaws.com/aws-codedeploy-eu-west-1/templates/latest/CodeDeploy_SampleCF_Template.json
+ 3. Open the template in an editor. After line 247 we want to install Java 8 and uninstall Java 7 as we did with our previous instance. Add the following lines:
+
+```bash
+"yum install java-1.8.0 -y \n",
+"yum remove java-1.7.0 -y \n",
+```
+4. Go to the AWS service CloudFormation and click Create stack.
+5. Choose _Upload a template to Amazon S3_ and choose your modified template .json file
+6. Specify details and parameters
+ - Stack name: `<application-name>`
+ - InstanceCount: `1`
+ - InstanceType: `t2.micro`
+ - KeyPairName: `<application-name>-key`
+ - OperatingSystem: `Linux`
+ - SSHLocation: `My IP`
+ - TagKey: `Name`
+ - TagValue: `<application-name>`
+7.  Click Next, then Next again,
+8. Tick the checkbox _I acknowledge that AWS CloudFormation might create IAM resources._ and click Create.
+9. While the instance is being provisioned move on to the next step
+
+### Source code modifications
+CodeBuild requires a buildspec.yml file to be in the root of your application. Example file:
+
+buildspec.yml
+
+```yml
+version: 0.2
+phases:
+  build:
+    commands:
+      - echo Build started on `date`
+      - sh gradlew clean assemble
+artifacts:
+  files:
+    - appspec.yml
+    - 'build/libs/*.jar'
+    - start_application.sh
+  discard-paths: yes
+```
+
+CodeDeploy requires two files, examples:
+
+appspec.yml
+
+```yml
+version: 0.0
+os: linux
+files:
+  - source: cloud-reverser-1.0-SNAPSHOT.jar
+    destination: /tmp
+hooks:
+  ApplicationStart:
+    - location: start_application.sh
+      timeout: 500
+      runas: root
+```
+
+start_application.sh
+
+```bash
+#!/bin/bash
+
+touch app.log
+nohup java -jar /tmp/*.jar -Dspring.profiles.active=production > app.log 2>&1 &
+```
+You may have to modify these files to fit your application.
+
+### Create a CodePipeline
+ 1. Go to the service CodePipeline and click _Create Pipeline_
+ 2. Name it `<application-name>-CodePipeline` and click next step
+ 3. For _Source provider_ chooce Github and click _Connect to Github_ and authorize AWS to access your Github resources
+ 4. In _Repository_ choose your application repository, then select the branch on which the version of the application that you want to deploy is (typiclly _master_). Then click _next_.
+ 
+ #### CodeBuild
+  - Build provider: `AWS CodeBuild`
+  - Configure your project -> Create a new build project
+  - Project Name: `<application-name>-CodeBuild`
+  - **Environment: How to build**
+  - Environment image: `Use an image managed by AWS CodeBuild`
+  - Operating system: `Ubuntu`
+  - Runtime: `Java`
+  - Version: `aws/codebuild/java:openjdk-8`
+  - Build specification: `Use the buildspec.yml in the source code root directory`
+  - **AWS CodeBuild service role**
+  - Select _Create a service role in your account_
+  - Role name: Leave as default
+  - Click _Save build project_
+  - After the build project is saved click _Next step_
+
+  #### CodeDeploy
+  - Deployment provider: `AWS CodeDeploy`
+  - **AWS CodeDeploy**
+  - Click the link _create a new one in AWS CodeDeploy_
+  - Application name: `<application-name>-Application`
+  - Deployment group: `<application-name>-DeploymentGroup`
+  - Deployment type: In-place deployment
+  - **Environment configuration**
+  - Choose Amazon EC2 instances
+  - Key: `Name`
+  - Value: `<application-name>` make sure you see the EC2 instance created by the CloudFormation template in the _Matching instances_ section
+  - Do not tick the box _Enable load balancing_
+  ** Deployment configuration**
+  - Leave as default
+  ** Service role**
+  - Service role ARN: Select the role named `BlueGreenCodeDeployServiceRole`
+  - Click create application
+
+  #### CodePipeline
+  - Go back to the pipeline tab
+  - **AWS CodeDeploy**
+  - Application name: `<application-name>-Application`
+  - Deployment group: `<application-name>-DeploymentGroup`
+  - Click _Next step_
+  - Role name: `AWS-CodePipeline-Service`
+  - Click _Next step_
+  - Review your pipeline, then click _Create pipeline_
 
 
