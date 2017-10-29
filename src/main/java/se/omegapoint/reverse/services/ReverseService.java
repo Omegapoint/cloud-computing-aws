@@ -8,6 +8,8 @@ import se.omegapoint.reverse.model.ReverseDatum;
 import se.omegapoint.reverse.model.ReversedData;
 import se.omegapoint.reverse.repositories.ReverseRepository;
 
+import java.util.Objects;
+
 @Service
 public class ReverseService {
 
@@ -21,7 +23,7 @@ public class ReverseService {
     public ReversedData reverse(final String data) {
         try {
             reverseRepository.save(ReverseDatum.builder()
-                    .withData(data)
+                    .withData(Objects.requireNonNull(data))
                     .withReversedData(new StringBuilder(data).reverse().toString())
                     .build());
         } catch(Exception ignored) {}
