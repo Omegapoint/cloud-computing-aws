@@ -31,7 +31,7 @@ public class ReverseController {
         }
     }
 
-    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    @RequestMapping(value = "/200", method = RequestMethod.GET)
     public void status() {
     }
 
