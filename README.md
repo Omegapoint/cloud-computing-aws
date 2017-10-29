@@ -1,6 +1,6 @@
 # Cloud Computing with AWS
 
-1. [Setup project](#setup)
+1. [Project setup](#setup)
 2. [Application profiles](#application_profiles)
 3. [Connecting your application to a PostgreSQL database](#database)
 4. [Manual deploy on EC2](#manualdeploy)
@@ -8,7 +8,7 @@
 
 
 <a name="setup"></a>
-## 1. Setup project
+## 1. Project setup 
  1. Download [Spring Boot 1.5.8](http://start.spring.io/) with gradle. Pick the _web_, _JPA_ and _postgreSQL_ dependencies. Use `group ID = se.omegapoint` and `artifact ID = <application-name>`.
  2. Install [PostgreSQL](https://www.postgresql.org/download/) on your local machine.
  3. Install [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your local machine.
@@ -50,7 +50,7 @@ For example, if `<data> = "omegapoint"` the application should return:
 ```json
 {
 	"timeStamp": "2017-10-28 11:16:58",
-	"applicationName": "reversing-richard",
+	"applicationName": "mega-arne",
 	"data": "tniopagemo"
 }
 ```
@@ -360,16 +360,17 @@ You may have to modify these files to fit your application.
  
 #### CodeBuild
 
+ * **Build**
   - Build provider: `AWS CodeBuild`
   - Configure your project -> Create a new build project
   - Project Name: `<application-name>-CodeBuild`
-  * **Environment: How to build**
+ * **Environment: How to build**
 	  - Environment image: `Use an image managed by AWS CodeBuild`
 	  - Operating system: `Ubuntu`
 	  - Runtime: `Java`
-	  - Version: `aws/codebuild/java:openjdk-8`
-	  - Build specification: `Use the buildspec.yml in the source code root directory`
-  * **AWS CodeBuild service role**
+	  - Version: _"aws/codebuild/java:openjdk-8"_
+	  - Build specification: _"Use the buildspec.yml in the source code root directory"_
+ * **AWS CodeBuild service role**
 	  - Select _Create a service role in your account_
 	  - Role name: Leave as default
 	  - Click _Save build project_
@@ -389,9 +390,9 @@ You may have to modify these files to fit your application.
 	  - Key: `Name`
 	  - Value: `<application-name>` make sure you see the EC2 instance created by the CloudFormation template in the _Matching instances_ section
 	  - Do not tick the box _Enable load balancing_
-	  ** Deployment configuration**
+ * **Deployment configuration**
 	  - Leave as default
-	  ** Service role**
+ * **Service role**
 	  - Service role ARN: Select the role named `BlueGreenCodeDeployServiceRole`
 	  - Click create application
 
