@@ -4,6 +4,7 @@
 2. [Application profiles](#application_profiles)
 3. [Connecting your application to a PostgreSQL database](#database)
 4. [Manual deploy on EC2](#manualdeploy)
+5. [Deployment with CodePipeline](#CodePipeline)
 
 
 <a name="setup"></a>
@@ -196,7 +197,7 @@ You have now created a new EC2 instance in the cloud, yay!
  4. Verify that your app is accessible from the internet by browsing the public IP address of the instance.
  
 
-
+<a name="CodePipeline"></a>
 ## 5. Deployment with CodePipeline
 CodePipeline is a managed service that connects together several other managed services. We will be using CodeBuild and CodeDeploy.
 In this lab CodeBuild will be configured to test and build our application. CodeDeploy will then copy the built artifact to an EC2 instance and start it.
@@ -255,7 +256,7 @@ appspec.yml
 version: 0.0
 os: linux
 files:
-  - source: cloud-reverser-1.0-SNAPSHOT.jar
+  - source: <application-name>-<version>.jar
     destination: /tmp
 hooks:
   ApplicationStart:
