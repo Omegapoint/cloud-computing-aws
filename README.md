@@ -286,46 +286,48 @@ You may have to modify these files to fit your application.
   - Build provider: `AWS CodeBuild`
   - Configure your project -> Create a new build project
   - Project Name: `<application-name>-CodeBuild`
-  - **Environment: How to build**
-  - Environment image: `Use an image managed by AWS CodeBuild`
-  - Operating system: `Ubuntu`
-  - Runtime: `Java`
-  - Version: `aws/codebuild/java:openjdk-8`
-  - Build specification: `Use the buildspec.yml in the source code root directory`
-  - **AWS CodeBuild service role**
-  - Select _Create a service role in your account_
-  - Role name: Leave as default
-  - Click _Save build project_
-  - After the build project is saved click _Next step_
+  * **Environment: How to build**
+	  - Environment image: `Use an image managed by AWS CodeBuild`
+	  - Operating system: `Ubuntu`
+	  - Runtime: `Java`
+	  - Version: `aws/codebuild/java:openjdk-8`
+	  - Build specification: `Use the buildspec.yml in the source code root directory`
+  * **AWS CodeBuild service role**
+	  - Select _Create a service role in your account_
+	  - Role name: Leave as default
+	  - Click _Save build project_
+	  - After the build project is saved click _Next step_
 
 #### CodeDeploy
  
-  - Deployment provider: `AWS CodeDeploy`
-  - **AWS CodeDeploy**
-  - Click the link _create a new one in AWS CodeDeploy_
-  - Application name: `<application-name>-Application`
-  - Deployment group: `<application-name>-DeploymentGroup`
-  - Deployment type: In-place deployment
-  - **Environment configuration**
-  - Choose Amazon EC2 instances
-  - Key: `Name`
-  - Value: `<application-name>` make sure you see the EC2 instance created by the CloudFormation template in the _Matching instances_ section
-  - Do not tick the box _Enable load balancing_
-  ** Deployment configuration**
-  - Leave as default
-  ** Service role**
-  - Service role ARN: Select the role named `BlueGreenCodeDeployServiceRole`
-  - Click create application
+ Deployment provider: `AWS CodeDeploy`
+ 
+  * **AWS CodeDeploy**
+  	- Click the link _create a new one in AWS CodeDeploy_
+  	- Application name: `<application-name>-Application`
+  	- Deployment group: `<application-name>-DeploymentGroup`
+  	- Deployment type: In-place deployment
+  * **Environment configuration**
+	  - Choose Amazon EC2 instances
+	  - Key: `Name`
+	  - Value: `<application-name>` make sure you see the EC2 instance created by the CloudFormation template in the _Matching instances_ section
+	  - Do not tick the box _Enable load balancing_
+	  ** Deployment configuration**
+	  - Leave as default
+	  ** Service role**
+	  - Service role ARN: Select the role named `BlueGreenCodeDeployServiceRole`
+	  - Click create application
 
 #### CodePipeline
  
-  - Go back to the pipeline tab
-  - **AWS CodeDeploy**
-  - Application name: `<application-name>-Application`
-  - Deployment group: `<application-name>-DeploymentGroup`
-  - Click _Next step_
-  - Role name: `AWS-CodePipeline-Service`
-  - Click _Next step_
-  - Review your pipeline, then click _Create pipeline_
+ Go back to the pipeline tab
+ 
+  * **AWS CodeDeploy**
+	  - Application name: `<application-name>-Application`
+	  - Deployment group: `<application-name>-DeploymentGroup`
+	  - Click _Next step_
+	  - Role name: `AWS-CodePipeline-Service`
+	  - Click _Next step_
+	  - Review your pipeline, then click _Create pipeline_
 
 
