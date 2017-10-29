@@ -519,6 +519,7 @@ pre.line-numbers > code {
 <li><a href="#database">Connecting your application to a PostgreSQL database</a></li>
 <li><a href="#manualdeploy">Manual deploy on EC2</a></li>
 <li><a href="#CodePipeline">Deployment with CodePipeline</a></li>
+<li><a href="#loadbalancing">Load balancing and subdomain</a></li>
 </ol>
 
 <p><a name="setup"></a></p>
@@ -994,6 +995,75 @@ nohup java -jar /tmp/*.jar -Dspring.profiles.active=production &gt; app.log 2&gt
 <li>Review your pipeline, then click <em>Create pipeline</em></li>
 </ul></li>
 </ul>
+
+<p><a name="loadbalancing"></a></p>
+
+<h2 id="toc_34">6. Load balancing and subdomain</h2>
+
+<h3 id="toc_35">Elastic Load Balaner</h3>
+
+<ol>
+<li>Go to EC2 -&gt; Load Balancers and click <em>Create Load Balancer</em></li>
+<li><em>Create</em> an Application Load Balancer</li>
+<li><strong>Basic Configuration</strong>
+
+<ul>
+<li>Name: <code>&lt;application-name&gt;-ALB</code></li>
+<li>Scheme: <em>internet-facing</em></li>
+<li>IP address type: <em>ipv4</em></li>
+</ul></li>
+<li><strong>Listeners</strong>
+
+<ul>
+<li>Leave as default</li>
+</ul></li>
+<li><strong>Availability Zones</strong>
+
+<ul>
+<li>VPC: Select whichever VPC is marked <em>default</em></li>
+<li>Select all availability zones</li>
+<li>Click _Next: Configure Security Settings</li>
+</ul></li>
+<li><strong>Conigure Security Settings</strong>
+
+<ul>
+<li>Leave as defualt, click <em>Next: Configure Security Groups</em></li>
+</ul></li>
+<li><strong>Configure Security Groups</strong>
+
+<ul>
+<li>Choose <em>Select an <strong>existing</strong> seurity group</em></li>
+<li>Select the group previously created: <code>&lt;application-name&gt;-security-group</code></li>
+<li>Click <em>Next: Configure Routing</em></li>
+</ul></li>
+<li><strong>Configure Routing</strong>
+
+<ul>
+<li>Leave as default except for <strong>Name</strong>: <code>&lt;application-name&gt;-TargetGroup</code></li>
+<li>Click <em>Next: Register Targets</em></li>
+</ul></li>
+<li><strong>Register Targets</strong>
+
+<ul>
+<li>Search for your EC2 instance in the <em>Instances</em> section</li>
+<li>Select your instance and click <em>Add to registered</em></li>
+<li>Click <em>Next: Review</em></li>
+</ul></li>
+<li>*<em>Review</em>
+
+<ul>
+<li>Review your Load Balancer configuration and click <em>Create</em></li>
+</ul></li>
+<li><strong>Verify your ALB is working</strong>
+
+<ul>
+<li>Go to EC2 -&gt; Load Balancers and find your Load Balancer</li>
+<li>Wait until the state of the Load Balancer changes from <em>provisioning</em> to <em>active</em></li>
+<li>Browse to the DNS name of the Load Balancer and verify that you reach your application</li>
+</ul></li>
+</ol>
+
+<h3 id="toc_36">Subdomain with Route53</h3>
 
 
 

@@ -5,6 +5,7 @@
 3. [Connecting your application to a PostgreSQL database](#database)
 4. [Manual deploy on EC2](#manualdeploy)
 5. [Deployment with CodePipeline](#CodePipeline)
+6. [Load balancing and subdomain](#loadbalancing)
 
 
 <a name="setup"></a>
@@ -407,8 +408,11 @@ You may have to modify these files to fit your application.
 	  - Role name: `AWS-CodePipeline-Service`
 	  - Click _Next step_
 	  - Review your pipeline, then click _Create pipeline_
+	  
+<a name="loadbalancing"></a>
 
 ## 6. Load balancing and subdomain
+
 ### Elastic Load Balaner
  1. Go to EC2 -> Load Balancers and click _Create Load Balancer_
  2. _Create_ an Application Load Balancer
