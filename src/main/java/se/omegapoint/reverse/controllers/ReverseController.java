@@ -6,7 +6,7 @@ import se.omegapoint.reverse.model.ReversedData;
 import se.omegapoint.reverse.services.ReverseService;
 
 @RestController
-@RequestMapping("arne")
+@RequestMapping("reverse")
 public class ReverseController {
 
     private final ReverseService reverseService;

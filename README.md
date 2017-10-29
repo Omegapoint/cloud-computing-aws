@@ -1,4 +1,4 @@
-# Cloud Computing w/ AWS
+# Cloud Computing with AWS
 
 1. [Setup project](#setup)
 2. [Application profiles](#application_profiles)
@@ -54,6 +54,72 @@ For example, if `<data> = "omegapoint"` the application should return:
 	"data": "tniopagemo"
 }
 ```
+### Java cheat sheet
+#### Controller
+
+```java
+@RestController
+@RequestMapping("<application-name>")
+public class ReverseController {
+
+    private final ReverseService reverseService;
+
+    @Autowired
+    public ReverseController(ReverseService reverseService) {
+        this.reverseService = reverseService;
+    }
+
+    @RequestMapping(value = "/reverse/{data}", method = RequestMethod.GET, produces="application/json")
+    public ReversedData reverse(@PathVariable("data") String data) {
+    	//Some logic
+    	return this.reverseService.reverse(data);    
+    }
+
+}
+```
+
+#### Service
+
+```java
+@Service
+public class ReverseService {
+
+    private final ReverseRepository reverseRepository;
+
+    @Autowired
+    public ReverseService(ReverseRepository reverseRepository) {
+        this.reverseRepository = reverseRepository;
+    }
+
+    public ReversedData reverse(final String data) {
+    	//some logic
+       return null;
+    }
+}
+```
+
+#### Repository
+
+```java
+public interface ReverseRepository extends CrudRepository<ReverseDatum, Long> {
+    ReverseDatum findByData(String data);
+}
+```
+
+#### Model
+
+```java
+@Entity
+@Table(name = "reverse_datum")
+public class ReverseDatum {
+
+    @Column(name = "data", unique=true)
+    public String data;
+
+    // Some more fields
+
+}
+```
 
 <a name="application_profiles"></a>
 ## 2. Application profiles
@@ -76,6 +142,14 @@ You can now run your application with `./gradlew bootRun -Dspring.profiles.activ
 ## 3. Connecting your application to a PostgreSQL database
 
 ### Local DB
+
+#### Configure main class
+Add the following notations on your main class:
+
+```java
+@EntityScan("se.omegapoint")
+@ComponentScan({"se.omegapoint"})
+```
 
 #### Configure `application-local.properties`
 
@@ -199,6 +273,9 @@ You have now created a new EC2 instance in the cloud, yay!
 
 <a name="CodePipeline"></a>
 ## 5. Deployment with CodePipeline
+
+[Login to AWS](https://sts.omegapoint.se/adfs/ls/IdpInitiatedSignOn.aspx). 
+
 CodePipeline is a managed service that connects together several other managed services. We will be using CodeBuild and CodeDeploy.
 In this lab CodeBuild will be configured to test and build our application. CodeDeploy will then copy the built artifact to an EC2 instance and start it.
 
@@ -206,7 +283,7 @@ In this lab CodeBuild will be configured to test and build our application. Code
 CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
 
  1. Terminate the EC2 instance you provisioned in the previous lab
- 2. Download this CloudFormation template: http://s3-eu-west-1.amazonaws.com/aws-codedeploy-eu-west-1/templates/latest/CodeDeploy_SampleCF_Template.json
+ 2. Download this [CloudFormation template](http://s3-eu-west-1.amazonaws.com/aws-codedeploy-eu-west-1/templates/latest/CodeDeploy_SampleCF_Template.json).
  3. Open the template in an editor. After line 233 we want to install Java 8 and uninstall Java 7 as we did with our previous instance. Add the following lines:
 
 ```bash
@@ -233,7 +310,7 @@ CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
 
 ##### buildspec.yml
 
-```yml
+```yaml
 version: 0.2
 phases:
   build:
@@ -252,7 +329,7 @@ artifacts:
 
 ##### appspec.yml
 
-```yml
+```yaml
 version: 0.0
 os: linux
 files:
