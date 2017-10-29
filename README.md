@@ -408,4 +408,38 @@ You may have to modify these files to fit your application.
 	  - Click _Next step_
 	  - Review your pipeline, then click _Create pipeline_
 
+## 6. Load balancing and subdomain
+### Elastic Load Balaner
+ 1. Go to EC2 -> Load Balancers and click _Create Load Balancer_
+ 2. _Create_ an Application Load Balancer
+ 3. **Basic Configuration**
+    - Name: `<application-name>-ALB`
+    - Scheme: _internet-facing_
+    - IP address type: _ipv4_
+ 4. **Listeners**
+    - Leave as default
+ 5. **Availability Zones**
+    - VPC: Select whichever VPC is marked _default_
+    - Select all availability zones
+    - Click _Next: Configure Security Settings
+ 6. **Conigure Security Settings**
+    - Leave as defualt, click _Next: Configure Security Groups_
+ 7. **Configure Security Groups**
+    - Choose _Select an **existing** seurity group_
+    - Select the group previously created: `<application-name>-security-group`
+    - Click _Next: Configure Routing_
+ 8. **Configure Routing**
+    - Leave as default except for **Name**: `<application-name>-TargetGroup`
+    - Click _Next: Register Targets_
+ 9. **Register Targets**
+    - Search for your EC2 instance in the _Instances_ section
+    - Select your instance and click _Add to registered_
+    - Click _Next: Review_
+ 10. **Review*
+    - Review your Load Balancer configuration and click _Create_
+ 11. **Verify your ALB is working**
+    - Go to EC2 -> Load Balancers and find your Load Balancer
+    - Wait until the state of the Load Balancer changes from _provisioning_ to _active_
+    - Browse to the DNS name of the Load Balancer and verify that you reach your application
 
+### Subdomain with Route53

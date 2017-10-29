@@ -1,4 +1,4 @@
 #!/bin/bash
 
-touch app.log
-nohup java -jar /tmp/*.jar -Dspring.profiles.active=production > app.log 2>&1 &
+touch /var/log/cloud-reverser.log
+nohup java -jar -Dspring.profiles.active=production /tmp/*.jar > /var/log/cloud-reverser.log 2>&1 &
