@@ -207,7 +207,7 @@ CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
 
  1. Terminate the EC2 instance you provisioned in the previous lab
  2. Download this CloudFormation template: http://s3-eu-west-1.amazonaws.com/aws-codedeploy-eu-west-1/templates/latest/CodeDeploy_SampleCF_Template.json
- 3. Open the template in an editor. After line 247 we want to install Java 8 and uninstall Java 7 as we did with our previous instance. Add the following lines:
+ 3. Open the template in an editor. After line 233 we want to install Java 8 and uninstall Java 7 as we did with our previous instance. Add the following lines:
 
 ```bash
 "yum install java-1.8.0 -y \n",
@@ -229,9 +229,9 @@ CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
 9. While the instance is being provisioned move on to the next step
 
 ### Source code modifications
-CodeBuild requires a buildspec.yml file to be in the root of your application. Example file:
+#### CodeBuild requires a buildspec.yml file to be in the root of your application. Example file:
 
-buildspec.yml
+##### buildspec.yml
 
 ```yml
 version: 0.2
@@ -248,9 +248,9 @@ artifacts:
   discard-paths: yes
 ```
 
-CodeDeploy requires two files, examples:
+#### CodeDeploy requires two files, examples:
 
-appspec.yml
+##### appspec.yml
 
 ```yml
 version: 0.0
@@ -265,7 +265,7 @@ hooks:
       runas: root
 ```
 
-start_application.sh
+##### start_application.sh
 
 ```bash
 #!/bin/bash
@@ -281,7 +281,8 @@ You may have to modify these files to fit your application.
  3. For _Source provider_ chooce Github and click _Connect to Github_ and authorize AWS to access your Github resources
  4. In _Repository_ choose your application repository, then select the branch on which the version of the application that you want to deploy is (typiclly _master_). Then click _next_.
  
- #### CodeBuild
+#### CodeBuild
+
   - Build provider: `AWS CodeBuild`
   - Configure your project -> Create a new build project
   - Project Name: `<application-name>-CodeBuild`
@@ -297,7 +298,8 @@ You may have to modify these files to fit your application.
   - Click _Save build project_
   - After the build project is saved click _Next step_
 
-  #### CodeDeploy
+#### CodeDeploy
+ 
   - Deployment provider: `AWS CodeDeploy`
   - **AWS CodeDeploy**
   - Click the link _create a new one in AWS CodeDeploy_
@@ -315,7 +317,8 @@ You may have to modify these files to fit your application.
   - Service role ARN: Select the role named `BlueGreenCodeDeployServiceRole`
   - Click create application
 
-  #### CodePipeline
+#### CodePipeline
+ 
   - Go back to the pipeline tab
   - **AWS CodeDeploy**
   - Application name: `<application-name>-Application`
