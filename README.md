@@ -453,7 +453,7 @@ You may have to modify these files to fit your application.
     - Search for your EC2 instance in the _Instances_ section
     - Select your instance and click _Add to registered_
     - Click _Next: Review_
- 10. **Review*
+ 10. **Review**
     - Review your Load Balancer configuration and click _Create_
  11. **Verify your ALB is working**
     - Go to EC2 -> Load Balancers and find your Load Balancer
