@@ -6,6 +6,7 @@
 4. [Manual deploy on EC2](#manualdeploy)
 5. [Deployment with CodePipeline](#CodePipeline)
 6. [Load balancing and subdomain](#loadbalancing)
+7. [Labs with less instructions](#other)
 
 
 <a name="setup"></a>
@@ -475,6 +476,7 @@ You may have to modify these files to fit your application.
     - Click: _Save Record Set_
  4. Try browsing your new subdomain to reach your application
 
+<a name="other"></a>
 ## 7. Labs with less instructions
 
 ### Lambda

@@ -520,6 +520,7 @@ pre.line-numbers > code {
 <li><a href="#manualdeploy">Manual deploy on EC2</a></li>
 <li><a href="#CodePipeline">Deployment with CodePipeline</a></li>
 <li><a href="#loadbalancing">Load balancing and subdomain</a></li>
+<li><a href="#other">Labs with less instructions</a></li>
 </ol>
 
 <p><a name="setup"></a></p>
@@ -1097,6 +1098,27 @@ nohup java -jar /tmp/*.jar -Dspring.profiles.active=production &gt; app.log 2&gt
 </ul></li>
 <li>Try browsing your new subdomain to reach your application</li>
 </ol>
+
+<p><a name="other"></a></p>
+
+<h2 id="toc_37">7. Labs with less instructions</h2>
+
+<h3 id="toc_38">Lambda</h3>
+
+<p>Create a Lambda function with API Gateway replicating the behaviour of the Spring application used in previous labs.</p>
+
+<p>Java is optional. Consider using the <a href="https://serverless.com/">Serverless framework</a>.</p>
+
+<p>This lab could be finished by configuring weighted routing for your record set in Route53. Equal weights would send half the traffic to your EC2 instance, and half the traffic to your Lambda.</p>
+
+<h3 id="toc_39">Auto scaling</h3>
+
+<p>Make your application highly available by launching your EC2 instances from/in an auto scaling group.</p>
+
+<p>High level outline
+  - Create an auto scaling group and launch configuration
+  - Configure CodeDeploy to deploy to the auto scaling group instead of the single EC2 instance used in the previous labs
+  - Configure the ALB to route to the EC2 instances in your auto scaling group.</p>
 
 
 
