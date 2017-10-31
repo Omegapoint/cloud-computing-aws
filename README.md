@@ -297,7 +297,7 @@ CodeDeploy requires the CodeDeploy Agent to be running on an EC2 instance.
 6. Specify details and parameters
  - Stack name: `<application-name>`
  - InstanceCount: `1`
- - InstanceType: `t2.micro`
+ - InstanceType: `t1.micro`
  - KeyPairName: `<application-name>-key`
  - OperatingSystem: `Linux`
  - SSHLocation: `My IP`
