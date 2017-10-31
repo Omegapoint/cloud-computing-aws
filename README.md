@@ -474,3 +474,20 @@ You may have to modify these files to fit your application.
     - Evaluate Targe Health: No
     - Click: _Save Record Set_
  4. Try browsing your new subdomain to reach your application
+
+## 7. Labs with less instructions
+
+### Lambda
+Create a Lambda function with API Gateway replicating the behaviour of the Spring application used in previous labs.
+
+Java is optional. Consider using the [Serverless framework](https://serverless.com/).
+
+This lab could be finished by configuring weighted routing for your record set in Route53. Equal weights would send half the traffic to your EC2 instance, and half the traffic to your Lambda.
+
+### Auto scaling
+Make your application highly available by launching your EC2 instances from/in an auto scaling group.
+
+High level outline
+  - Create an auto scaling group and launch configuration
+  - Configure CodeDeploy to deploy to the auto scaling group instead of the single EC2 instance used in the previous labs
+  - Configure the ALB to route to the EC2 instances in your auto scaling group.
