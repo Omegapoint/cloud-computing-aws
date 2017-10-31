@@ -1039,7 +1039,21 @@ nohup java -jar /tmp/*.jar -Dspring.profiles.active=production &gt; app.log 2&gt
 <li><strong>Configure Routing</strong>
 
 <ul>
-<li>Leave as default except for <strong>Name</strong>: <code>&lt;application-name&gt;-TargetGroup</code></li>
+<li>Target group: New target group</li>
+<li>Name: <code>&lt;application-name&gt;-TargetGroup</code></li>
+<li>Protocol: HTTP</li>
+<li>Port: 8080 (or the custom port on which your application is running)</li>
+<li>Target type: instance</li>
+<li><strong>Healtch Checks</strong></li>
+<li>Protocol: HTTP</li>
+<li>Path: any valid path where your application responds with <code>HTTP 200</code></li>
+<li><strong>Advanced healthcheck settings</strong></li>
+<li>Port: traffic port</li>
+<li>Healthy treshold: 2</li>
+<li>Unhealthy treshold: 2</li>
+<li>Timeout: 5</li>
+<li>Interval: 10</li>
+<li>Success codes: 200-299</li>
 <li>Click <em>Next: Register Targets</em></li>
 </ul></li>
 <li><strong>Register Targets</strong>
@@ -1049,7 +1063,7 @@ nohup java -jar /tmp/*.jar -Dspring.profiles.active=production &gt; app.log 2&gt
 <li>Select your instance and click <em>Add to registered</em></li>
 <li>Click <em>Next: Review</em></li>
 </ul></li>
-<li>*<em>Review</em>
+<li><strong>Review</strong>
 
 <ul>
 <li>Review your Load Balancer configuration and click <em>Create</em></li>
@@ -1059,11 +1073,30 @@ nohup java -jar /tmp/*.jar -Dspring.profiles.active=production &gt; app.log 2&gt
 <ul>
 <li>Go to EC2 -&gt; Load Balancers and find your Load Balancer</li>
 <li>Wait until the state of the Load Balancer changes from <em>provisioning</em> to <em>active</em></li>
-<li>Browse to the DNS name of the Load Balancer and verify that you reach your application</li>
+<li>Go to EC2 -&gt; Target groups and find the target group containing your instance</li>
+<li>Click the <em>Targets</em> tab and verify that your instance has the status healthy. If properly configured it will take up to 20 seconds for the instance to pass its healthcheck.</li>
+<li>Browse to the DNS name of the Load Balancer (including request mapping) and verify that you reach your application</li>
 </ul></li>
 </ol>
 
 <h3 id="toc_36">Subdomain with Route53</h3>
+
+<ol>
+<li>Go to Route53 -&gt; Hosted zones and click <em>lab.omegapint.academy</em>.</li>
+<li>Click <em>Create record set</em></li>
+<li><strong>Creat record set</strong>
+
+<ul>
+<li>Name: choose a subdomain (e.g. test.lab.omegapoint.academy)</li>
+<li>Type: A - IPv4 address</li>
+<li>Alias: Yes</li>
+<li>Alias target: select your ALB</li>
+<li>Routing policy: Simple</li>
+<li>Evaluate Targe Health: No</li>
+<li>Click: <em>Save Record Set</em></li>
+</ul></li>
+<li>Try browsing your new subdomain to reach your application</li>
+</ol>
 
 
 
